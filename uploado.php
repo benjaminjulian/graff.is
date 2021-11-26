@@ -1,8 +1,6 @@
-
 <?php
     require "../creds.php";
     require 'vendor/autoload.php';
-
     function getGps($exifCoord, $hemi) {
 
         $degrees = count($exifCoord) > 0 ? gps2Num($exifCoord[0]) : 0;
@@ -33,7 +31,6 @@
 
     try {
         $exif = exif_read_data($temp_file_location);
-        var_dump($exif);
 
         $lon = getGps($exif["GPSLongitude"], $exif['GPSLongitudeRef']);
         $lat = getGps($exif["GPSLatitude"], $exif['GPSLatitudeRef']);
@@ -41,7 +38,7 @@
 
         $prefix = date("Y-m-d--H-i-s ", strtotime($date));
     } catch (Exception $e) {
-        exit($e);
+        echo "Villa í EXIF lestri";
     }
 
     $mysqli = new mysqli("localhost", $mysql_user, $mysql_pass);
@@ -76,8 +73,7 @@
             imagecopyresampled( $dst, $src, 0, 0, 0, 0, $new_width, $new_height, $width, $height );
             imagedestroy( $src );
             $exif = exif_read_data($temp_file_location);
-            if ($exif && isset($exif['Orientation']))
-            {
+            if ($exif && isset($exif['Orientation'])) {
                 $orientation = $exif['Orientation'];
                 if ($orientation != 1)
                 {
@@ -127,7 +123,9 @@
         ]);
 
         unlink($target_filename);
+
+        echo "Skráð."
     } else {
-        die("exif villa");
+        die("Engin EXIF gögn!");
     }
 ?>

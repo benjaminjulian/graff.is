@@ -24,6 +24,8 @@
             border-radius: 5px;
             background-color: blue;
             color: #ffffff;
+            margin-left: auto;
+            margin-right: auto;
         }
         #file_to_upload {
             display: none;
@@ -61,20 +63,21 @@
 <body>
     <div id="content">
         <h1>graff.is</h1>
-        <h2>Senda inn myndir af graffi</h2>
         <label id="uploadlabel">
             <span>
-                Veldu myndir
+                senda inn mynd
             </span>
             <input type="file" name="file_to_upload" id="file_to_upload" class="upload" onchange="upgo()" accept=".jpg, .jpeg, .png" multiple>
         </label>
-        <div id="progress_status"></div>
+        <div id="progress_status"></div><div style="clear: left"></div>
         <hr>
         <div id="album">
             <div id="map" style="height: 440px; border: 1px solid #AAA;"></div>
         </div>
     </div>
     <script>
+        loadMarkers();
+
         function loadMarkers() {
             var xhr = new XMLHttpRequest();
             xhr.open('GET', 'markers.php', true);
@@ -107,16 +110,28 @@
                 iconAnchor: [9, 5],
                 popupAnchor: [0, -10],
             });
+
+            var popups = [];
+            var pins = [];
             
             for (var i = 0; i < markers.length; ++i) {
-                L.marker([markers[i].lat, markers[i].lng], { icon: myIcon })
-                .bindPopup(
-                    L.popup().setContent(
-                    'link r sum'//'<img src="https://graff.s3.eu-west-1.amazonaws.com/thumbs/' + markers[i].file_name + '">'
-                    ).openOn(map)
-                )
-                .addTo(map)
+                popups[i] = L.popup({maxWidth: "auto", autoPan: false}).setContent('<img src="https://graff.s3.eu-west-1.amazonaws.com/thumbs/' + markers[i].file_name + '">');
+                pins[i] = L.marker([markers[i].lat, markers[i].lng], { icon: myIcon }).addTo(map);
+                pins[i].bindPopup(popups[i]);
+                pins[i].on('click', function(event) {
+                    pins[i].openPopup();
+                    L.Util.stop(event);
+                });
             }
+
+            document.querySelector(".leaflet-popup-pane").addEventListener("load", function (event) {
+                var tagName = event.target.tagName,
+                    popup = map._popup; // Currently open popup, if any.
+
+                if (tagName === "IMG" && popup) {
+                    popup.update();
+                }
+                }, true);
         }
 
         function upgo() {
@@ -131,9 +146,8 @@
 
                 var xhr = new XMLHttpRequest();
                 xhr.onreadystatechange = function() {       
-                    if(xhr.readyState==4 && xhr.status==200)
-                    {
-                    document.getElementById('progress_status').innerHTML = "Komið!";
+                    if(xhr.readyState==4 && xhr.status==200) {
+                        document.getElementById('progress_status').innerHTML = xhr.responseText;
                     }
                 }
                 
@@ -162,7 +176,12 @@
                             $("#progress_status").append('<span id="nr_' + total + '" class="progressor" ></span>');
                         }
                         completed = Math.round((done / total * 1000) / 10);
-                        document.getElementById('nr_' + total).innerHTML = completed + '%';
+
+                        if (completed == 100) {
+                            document.getElementById('nr_' + total).innerHTML = 'Skrái mynd...';
+                        } else {
+                            document.getElementById('nr_' + total).innerHTML = completed + '%';
+                        }
                     }
                 };
 
