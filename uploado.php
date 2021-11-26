@@ -2,10 +2,37 @@
 <?php
     require "../creds.php";
     require 'vendor/autoload.php';
-
+/*
     $file_name = $_FILES['image']['name'];   
     $temp_file_location = $_FILES['image']['tmp_name']; 
 
+    echo getimagesize($_FILES["image"]["tmp_name"]);
+*/
+list($type, $data) = explode(';', $_POST['file']);
+list(, $data) = explode(',', $data);
+$file_data = base64_decode($data);
+
+// Get file mime type
+$finfo = finfo_open();
+$file_mime_type = finfo_buffer($finfo, $file_data, FILEINFO_MIME_TYPE);
+
+// File extension from mime type
+if($file_mime_type == 'image/jpeg' || $file_mime_type == 'image/jpg')
+	$file_type = 'jpeg';
+else if($file_mime_type == 'image/png')
+	$file_type = 'png';
+else if($file_mime_type == 'image/gif')
+	$file_type = 'gif';
+else 
+	$file_type = 'other';
+
+// Validate type of file
+if(in_array($file_type, [ 'jpeg', 'png', 'gif' ])) {
+	// Set a unique name to the file and save
+	$file_name = $_POST['name'];
+    $temp_file_location = "temp_".$file_name;
+	file_put_contents($temp_file_location, $file_data);
+}
     $date = $_POST['date_taken'];
     $lat = $_POST['latitude'];
     $lon = $_POST['longitude'];
@@ -24,9 +51,7 @@
 
     $q = "INSERT INTO graffiti (file_name, ip_address, date_taken, date_uploaded, gps_latitude, gps_longitude) values
             ('$q_filename', '$q_ip_address', '$q_date_taken', NOW(), $q_latitude, $q_longitude);";
-    
-    echo $q;
-    
+    /*
     if ($mysqli -> query($q) === TRUE) {
         $maxDim = 300;
         list($width, $height, $type, $attr) = getimagesize( $temp_file_location );
@@ -98,5 +123,5 @@
         unlink($target_filename);
     } else {
         die("exif villa");
-    }
+    }*/
 ?>

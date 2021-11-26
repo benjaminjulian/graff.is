@@ -173,11 +173,10 @@
             // This is input object which type of file.  
             var uploader = document.getElementById("file_to_upload"); 
             var dataurl_reader = new FileReader();
-            var file_before;
 
             // We'll send a new post for each file.
             for(var i=0, j=uploader.files.length; i<j; i++) {
-                file_before = uploader.files[i];
+                fname = uploader.files[i].name
                 dataurl_reader.readAsDataURL(uploader.files[i]);
                 dataurl_reader.onloadend = function() {
                     var jpeg = new $j(atob(this.result.replace(/^.*?,/,'')), uploader.files[i]);
@@ -185,10 +184,11 @@
                     if (jpeg.gps.longitude) {
                         var uploaderForm = new FormData(); // Create new FormData
                         uploaderForm.append("action", "upload"); // append extra parameters if you wish.
-                        uploaderForm.append("image", file_before); // append the next file for upload
+                        uploaderForm.append("image", uploader.files[i]); // append the next file for upload
                         uploaderForm.append("longitude", jpeg.gps.longitude);
                         uploaderForm.append("latitude", jpeg.gps.latitude);
-                        uploaderForm.append("date_taken", jpeg.exif.DateTimeOriginal.value)
+                        uploaderForm.append("date_taken", jpeg.exif.DateTimeOriginal.value);
+                        uploaderForm.append("name", fname);
 
                         var xhr = new XMLHttpRequest();
                         xhr.onreadystatechange = function() {       
