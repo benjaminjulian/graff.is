@@ -37,9 +37,23 @@
         }
  
     </style>
-    <link rel="stylesheet" type="text/css" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
-    <script type='text/javascript' src='//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js'></script>
-    <script type='text/javascript' src='http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js'></script>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+      integrity="sha384-VzLXTJGPSyTLX6d96AxgkKvE/LRb7ECGyTxuwtpjHnVWVZs2gp5RDjeM/tgBnVdM"
+      crossorigin="anonymous"
+    />
+
+   <script
+      src="https://unpkg.com/jquery@3.6.0/dist/jquery.min.js"
+      integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+      integrity="sha384-RFZC58YeKApoNsIbBxf4z6JJXmh+geBSgkCQXFyh+4tiFSJmJBt+2FbjxW7Ar16M"
+      crossorigin="anonymous"
+    ></script>
     <title>graff.is</title>
  
 </head>
@@ -70,7 +84,7 @@
     if ($result = $mysqli -> query($q)) {
         while ($row = $result -> fetch_row()) {
             echo '<li><a href="https://graff.s3.eu-west-1.amazonaws.com/fullres/'.$row[0].'">';
-            echo '<img src="https://graff.s3.eu-west-1.amazonaws.com/fullres/'.$row[0].'">';
+            echo '<img src="https://graff.s3.eu-west-1.amazonaws.com/thumbs/'.$row[0].'">';
             echo '</li>';
         }
     }
