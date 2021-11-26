@@ -8,7 +8,7 @@
 
     echo getimagesize($_FILES["image"]["tmp_name"]);
 */
-list($type, $data) = explode(';', $_POST['file']);
+list($type, $data) = explode(';', $_POST['image']);
 list(, $data) = explode(',', $data);
 $file_data = base64_decode($data);
 
@@ -51,7 +51,7 @@ if(in_array($file_type, [ 'jpeg', 'png', 'gif' ])) {
 
     $q = "INSERT INTO graffiti (file_name, ip_address, date_taken, date_uploaded, gps_latitude, gps_longitude) values
             ('$q_filename', '$q_ip_address', '$q_date_taken', NOW(), $q_latitude, $q_longitude);";
-    /*
+
     if ($mysqli -> query($q) === TRUE) {
         $maxDim = 300;
         list($width, $height, $type, $attr) = getimagesize( $temp_file_location );
@@ -123,5 +123,5 @@ if(in_array($file_type, [ 'jpeg', 'png', 'gif' ])) {
         unlink($target_filename);
     } else {
         die("exif villa");
-    }*/
+    }
 ?>

@@ -115,8 +115,7 @@
             var xhr = new XMLHttpRequest();
             xhr.open('GET', 'markers.php?from=' + dt_from + '&to=' + dt_to, true);
             xhr.responseType = 'json';
-            xhr.onload = function() {      
-                console.log(xhr.response); 
+            xhr.onload = function() {
                 initMap(xhr.response);
             }
             xhr.send();
@@ -173,18 +172,19 @@
             // This is input object which type of file.  
             var uploader = document.getElementById("file_to_upload"); 
             var dataurl_reader = new FileReader();
+            var fname;
 
             // We'll send a new post for each file.
             for(var i=0, j=uploader.files.length; i<j; i++) {
-                fname = uploader.files[i].name
+                fname = uploader.files[i].name;
                 dataurl_reader.readAsDataURL(uploader.files[i]);
                 dataurl_reader.onloadend = function() {
                     var jpeg = new $j(atob(this.result.replace(/^.*?,/,'')), uploader.files[i]);
 
                     if (jpeg.gps.longitude) {
                         var uploaderForm = new FormData(); // Create new FormData
-                        uploaderForm.append("action", "upload"); // append extra parameters if you wish.
-                        uploaderForm.append("image", uploader.files[i]); // append the next file for upload
+                        uploaderForm.append("action", "post"); // append extra parameters if you wish.
+                        uploaderForm.append("image", dataurl_reader.result); // append the next file for upload
                         uploaderForm.append("longitude", jpeg.gps.longitude);
                         uploaderForm.append("latitude", jpeg.gps.latitude);
                         uploaderForm.append("date_taken", jpeg.exif.DateTimeOriginal.value);
@@ -198,8 +198,6 @@
                         }
                         
                         xhr.addEventListener("loadstart", function(e){
-                            console.log(e)
-                            // generate unique id for progress bars. This is important because we'll use it on progress event for modifications
                             this.progressId = "progress_" + Math.floor((Math.random() * 100000)); 
 
                             
