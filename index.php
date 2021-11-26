@@ -74,61 +74,99 @@
             <div id="map" style="height: 440px; border: 1px solid #AAA;"></div>
         </div>
     </div>
-    <script type='text/javascript' src='maps/markers.js'></script>
-    <script type='text/javascript' src='maps/mapcode.js'></script>
     <script>
-    function upgo() {
-// This is input object which type of file.  
-var uploader = document.getElementById("file_to_upload"); 
-
-// We'll send a new post for each file.
-for(var i=0, j=uploader.files.length; i<j; i++)
-{
-    var uploaderForm = new FormData(); // Create new FormData
-    uploaderForm.append("action","upload"); // append extra parameters if you wish.
-    uploaderForm.append("image",uploader.files[i]); // append the next file for upload
-
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function() {       
-        if(xhr.readyState==4 && xhr.status==200)
-        {
-          document.getElementById('progress_status').innerHTML = "Komið!";
-        }
-    }
-    
-    xhr.addEventListener("loadstart", function(e){
-        console.log(e)
-        // generate unique id for progress bars. This is important because we'll use it on progress event for modifications
-        this.progressId = "progress_" + Math.floor((Math.random() * 100000)); 
-
-        
-    });
-
-    /*xhr.upload.onprogress = function(e){
-        var done = e.position || e.loaded, total = e.totalSize || e.total
-        var present = Math.floor(done/total*100)
-        
-        document.getElementById('progress_status').innerHTML = present + '%'
-    }*/
-    xhr.upload.onprogress = function(e) 
-    {
-        var completed = 0;
-        if (e.lengthComputable) {
-            var done = e.position || e.loaded,
-                total = e.totalSize || e.total;
-            
-            if (document.getElementById("nr_" + total) == null) {
-                $("#progress_status").append('<span id="nr_' + total + '" class="progressor" ></span>');
+        function loadMarkers() {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', 'markers.php');
+            xhr.responseType = 'json';
+            xhr.send();
+            xhr.onload = function() {       
+                initMap(xhr.response);
             }
-            completed = Math.round((done / total * 1000) / 10);
-            document.getElementById('nr_' + total).innerHTML = completed + '%';
         }
-    };
+        function initMap(markers) {
+            var map = L.map('map', {
+                center: [20.0, 5.0],
+                minZoom: 2,
+                zoom: 2,
+            });
+            
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution:
+                '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+                subdomains: ['a', 'b', 'c'],
+            }).addTo(map);
+            
+            var myURL = 'maps/';
+            
+            var myIcon = L.icon({
+                iconUrl: myURL + 'marker.png',
+                iconRetinaUrl: myURL + 'markerxl.png',
+                iconSize: [18, 30],
+                iconAnchor: [9, 5],
+                popupAnchor: [0, -100],
+            });
+            
+            for (var i = 0; i < markers.length; ++i) {
+                L.marker([markers[i].lat, markers[i].lng], { icon: myIcon })
+                .bindPopup(
+                    '<img src="https://graff.s3.eu-west-1.amazonaws.com/thumbs/' + markers[i].file_name + '">'
+                )
+                .addTo(map)
+            }
+        }
 
-    xhr.open("POST","uploado.php");
-    xhr.send(uploaderForm);
-}
-}
+        function upgo() {
+            // This is input object which type of file.  
+            var uploader = document.getElementById("file_to_upload"); 
+
+            // We'll send a new post for each file.
+            for(var i=0, j=uploader.files.length; i<j; i++) {
+                var uploaderForm = new FormData(); // Create new FormData
+                uploaderForm.append("action","upload"); // append extra parameters if you wish.
+                uploaderForm.append("image",uploader.files[i]); // append the next file for upload
+
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function() {       
+                    if(xhr.readyState==4 && xhr.status==200)
+                    {
+                    document.getElementById('progress_status').innerHTML = "Komið!";
+                    }
+                }
+                
+                xhr.addEventListener("loadstart", function(e){
+                    console.log(e)
+                    // generate unique id for progress bars. This is important because we'll use it on progress event for modifications
+                    this.progressId = "progress_" + Math.floor((Math.random() * 100000)); 
+
+                    
+                });
+
+                /*xhr.upload.onprogress = function(e){
+                    var done = e.position || e.loaded, total = e.totalSize || e.total
+                    var present = Math.floor(done/total*100)
+                    
+                    document.getElementById('progress_status').innerHTML = present + '%'
+                }*/
+                xhr.upload.onprogress = function(e) 
+                {
+                    var completed = 0;
+                    if (e.lengthComputable) {
+                        var done = e.position || e.loaded,
+                            total = e.totalSize || e.total;
+                        
+                        if (document.getElementById("nr_" + total) == null) {
+                            $("#progress_status").append('<span id="nr_' + total + '" class="progressor" ></span>');
+                        }
+                        completed = Math.round((done / total * 1000) / 10);
+                        document.getElementById('nr_' + total).innerHTML = completed + '%';
+                    }
+                };
+
+                xhr.open("POST","uploado.php");
+                xhr.send(uploaderForm);
+            }
+        }
     </script>
 </body>
  
