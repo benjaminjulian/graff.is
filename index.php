@@ -93,7 +93,7 @@
         </div>
     </div>
     <script type='text/javascript' src='maps/markers.js'></script>
-    <script type='text/javascript' src='maps/leaflet.js'></script>
+    <script type='text/javascript' src='maps/mapcode.js'></script>
     <script>
     function upgo() {
 // This is input object which type of file.  

@@ -10,15 +10,15 @@ var map = L.map('map', {
     subdomains: ['a', 'b', 'c'],
   }).addTo(map)
   
-  var myURL = jQuery('script[src$="leaf-demo.js"]')
+  var myURL = jQuery('script[src$="mapcode.js"]')
     .attr('src')
-    .replace('leaf-demo.js', '')
+    .replace('mapcode.js', '')
   
   var myIcon = L.icon({
-    iconUrl: myURL + 'images/pin24.png',
-    iconRetinaUrl: myURL + 'images/pin48.png',
-    iconSize: [29, 24],
-    iconAnchor: [9, 21],
+    iconUrl: myURL + 'marker.png',
+    iconRetinaUrl: myURL + 'markerxl.png',
+    iconSize: [18, 30],
+    iconAnchor: [9, 5],
     popupAnchor: [0, -14],
   })
   
