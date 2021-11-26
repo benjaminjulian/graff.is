@@ -72,24 +72,6 @@
         <hr>
         <div id="album">
             <div id="map" style="height: 440px; border: 1px solid #AAA;"></div>
-            <ul>
-<?php
-    require "../creds.php";
-    $mysqli = new mysqli("localhost", $mysql_user, $mysql_pass);
-    $mysqli -> select_db("base_db");
-    $mysqli -> query("SET time_zone = '+00:00'");
-
-    $q = "SELECT * FROM graffiti";
-
-    if ($result = $mysqli -> query($q)) {
-        while ($row = $result -> fetch_row()) {
-            echo '<li><a href="https://graff.s3.eu-west-1.amazonaws.com/fullres/'.$row[0].'">';
-            echo '<img src="https://graff.s3.eu-west-1.amazonaws.com/thumbs/'.$row[0].'">';
-            echo '</li>';
-        }
-    }
-?>
-            </ul>
         </div>
     </div>
     <script type='text/javascript' src='maps/markers.js'></script>

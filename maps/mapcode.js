@@ -19,17 +19,13 @@ var map = L.map('map', {
     iconRetinaUrl: myURL + 'markerxl.png',
     iconSize: [18, 30],
     iconAnchor: [9, 5],
-    popupAnchor: [0, -14],
+    popupAnchor: [0, -100],
   })
   
   for (var i = 0; i < markers.length; ++i) {
     L.marker([markers[i].lat, markers[i].lng], { icon: myIcon })
       .bindPopup(
-        '<a href="' +
-          markers[i].url +
-          '" target="_blank">' +
-          markers[i].name +
-          '</a>'
+        '<img src="https://graff.s3.eu-west-1.amazonaws.com/thumbs/' + markers[i].file_name + '">'
       )
       .addTo(map)
   }
