@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html id="dropbox" lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>JsJpegMeta Demo</title>
+  <script
+  src="https://unpkg.com/jquery@3.6.0/dist/jquery.min.js"
+  integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK"
+  crossorigin="anonymous"
+></script>
+<script
+  src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+  integrity="sha384-RFZC58YeKApoNsIbBxf4z6JJXmh+geBSgkCQXFyh+4tiFSJmJBt+2FbjxW7Ar16M"
+  crossorigin="anonymous"
+></script>
+  <script type="text/javascript" src="jpegmeta.js"></script>
+  <script type="text/javascript" src="demo.js"></script>
+</head>
+
+<body>
+  <h1>JsJpegMeta Demo</h1>
+  <form id="form" action="javascript:void(0)">
+    <p>Choose JPEG file: <input id="fileWidget" type="file"></p>
+  </form>
+  <img id="img" height="100" alt="Image preview" src="">
+  <div id="status"></div>
+</body>
+
+</html>

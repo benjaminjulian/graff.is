@@ -6,7 +6,23 @@
     $mysqli -> select_db("base_db");
     $mysqli -> query("SET time_zone = '+00:00'");
 
-    $q = "SELECT * FROM graffiti";
+    $date_from = "";
+    $date_to = "";
+    
+    if (isset($_GET['from'])) {
+        $date_from = $mysqli -> real_escape_string($_GET['from']);
+    } 
+    if ($date_from == "") {
+        $date_from = "1900-01-01";
+    }
+    if (isset($_GET['to'])) {
+        $date_to = $mysqli -> real_escape_string($_GET['to']);
+    } 
+    if ($date_to == "") {
+        $date_to = "2100-12-12";
+    }
+
+    $q = "SELECT * FROM graffiti WHERE date_taken > '$date_from' AND date_taken < '$date_to'";
 
     $json = [];
 

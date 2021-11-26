@@ -1,45 +1,15 @@
+
 <?php
     require "../creds.php";
     require 'vendor/autoload.php';
-    function getGps($exifCoord, $hemi) {
-
-        $degrees = count($exifCoord) > 0 ? gps2Num($exifCoord[0]) : 0;
-        $minutes = count($exifCoord) > 1 ? gps2Num($exifCoord[1]) : 0;
-        $seconds = count($exifCoord) > 2 ? gps2Num($exifCoord[2]) : 0;
-
-        $flip = ($hemi == 'W' or $hemi == 'S') ? -1 : 1;
-
-        return $flip * ($degrees + $minutes / 60 + $seconds / 3600);
-
-    }
-
-    function gps2Num($coordPart) {
-
-        $parts = explode('/', $coordPart);
-
-        if (count($parts) <= 0)
-            return 0;
-
-        if (count($parts) == 1)
-            return $parts[0];
-
-        return floatval($parts[0]) / floatval($parts[1]);
-    }
 
     $file_name = $_FILES['image']['name'];   
     $temp_file_location = $_FILES['image']['tmp_name']; 
 
-    try {
-        $exif = exif_read_data($temp_file_location);
-
-        $lon = getGps($exif["GPSLongitude"], $exif['GPSLongitudeRef']);
-        $lat = getGps($exif["GPSLatitude"], $exif['GPSLatitudeRef']);
-        $date = $exif['DateTimeOriginal'];
-
-        $prefix = date("Y-m-d--H-i-s ", strtotime($date));
-    } catch (Exception $e) {
-        echo "Villa í EXIF lestri";
-    }
+    $date = $_POST['date_taken'];
+    $lat = $_POST['latitude'];
+    $lon = $_POST['longitude'];
+    $prefix = date("Y-m-d--H-i-s ", strtotime($date));
 
     $mysqli = new mysqli("localhost", $mysql_user, $mysql_pass);
     $mysqli -> select_db("base_db");
@@ -54,6 +24,8 @@
 
     $q = "INSERT INTO graffiti (file_name, ip_address, date_taken, date_uploaded, gps_latitude, gps_longitude) values
             ('$q_filename', '$q_ip_address', '$q_date_taken', NOW(), $q_latitude, $q_longitude);";
+    
+    echo $q; /*
     
     if ($mysqli -> query($q) === TRUE) {
         $maxDim = 300;
@@ -73,7 +45,8 @@
             imagecopyresampled( $dst, $src, 0, 0, 0, 0, $new_width, $new_height, $width, $height );
             imagedestroy( $src );
             $exif = exif_read_data($temp_file_location);
-            if ($exif && isset($exif['Orientation'])) {
+            if ($exif && isset($exif['Orientation']))
+            {
                 $orientation = $exif['Orientation'];
                 if ($orientation != 1)
                 {
@@ -123,9 +96,7 @@
         ]);
 
         unlink($target_filename);
-
-        echo "Skráð."
     } else {
-        die("Engin EXIF gögn!");
-    }
+        die("exif villa");
+    }*/
 ?>
