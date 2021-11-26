@@ -8,6 +8,13 @@
         html {
             font-family: sans-serif;
         }
+
+        #content {
+            width: 450px;
+            margin-left: auto;
+            margin-right: auto;
+
+        }
         
         #uploadlabel {
             border: 1px solid #ccc;
@@ -30,21 +37,49 @@
         }
  
     </style>
+    <link rel="stylesheet" type="text/css" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+    <script type='text/javascript' src='//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js'></script>
+    <script type='text/javascript' src='http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js'></script>
     <title>graff.is</title>
  
 </head>
  
 <body>
-    <h1>graff.is</h1>
-    <h2>Senda inn myndir af graffi</h2>
-    <label id="uploadlabel">
-        <span>
-            Veldu myndir
-        </span>
-        <input type="file" name="file_to_upload" id="file_to_upload" class="upload" onchange="upgo()" accept=".jpg, .jpeg, .png" multiple>
-    </label>
-    <div id="progress_status"></div>
- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+    <div id="content">
+        <h1>graff.is</h1>
+        <h2>Senda inn myndir af graffi</h2>
+        <label id="uploadlabel">
+            <span>
+                Veldu myndir
+            </span>
+            <input type="file" name="file_to_upload" id="file_to_upload" class="upload" onchange="upgo()" accept=".jpg, .jpeg, .png" multiple>
+        </label>
+        <div id="progress_status"></div>
+        <hr>
+        <div id="album">
+            <div id="map" style="height: 440px; border: 1px solid #AAA;"></div>
+            <ul>
+<?php
+    require "../creds.php";
+    $mysqli = new mysqli("localhost", $mysql_user, $mysql_pass);
+    $mysqli -> select_db("base_db");
+    $mysqli -> query("SET time_zone = '+00:00'");
+
+    $q = "SELECT * FROM graffiti";
+
+    if ($result = $mysqli -> query($q)) {
+        while ($row = $result -> fetch_row()) {
+            echo '<li><a href="https://graff.s3.eu-west-1.amazonaws.com/fullres/'.$row[0].'">';
+            echo '<img src="https://graff.s3.eu-west-1.amazonaws.com/fullres/'.$row[0].'">';
+            echo '</li>';
+        }
+    }
+?>
+            </ul>
+        </div>
+    </div>
+    <script type='text/javascript' src='maps/markers.js'></script>
+    <script type='text/javascript' src='maps/leaflet.js'></script>
     <script>
     function upgo() {
 // This is input object which type of file.  
