@@ -25,7 +25,7 @@
     $q = "INSERT INTO graffiti (file_name, ip_address, date_taken, date_uploaded, gps_latitude, gps_longitude) values
             ('$q_filename', '$q_ip_address', '$q_date_taken', NOW(), $q_latitude, $q_longitude);";
     
-    echo $q; /*
+    echo $q;
     
     if ($mysqli -> query($q) === TRUE) {
         $maxDim = 300;
@@ -98,5 +98,5 @@
         unlink($target_filename);
     } else {
         die("exif villa");
-    }*/
+    }
 ?>
