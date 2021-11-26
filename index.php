@@ -77,12 +77,13 @@
     <script>
         function loadMarkers() {
             var xhr = new XMLHttpRequest();
-            xhr.open('GET', 'markers.php');
+            xhr.open('GET', 'markers.php', true);
             xhr.responseType = 'json';
-            xhr.send();
-            xhr.onload = function() {       
+            xhr.onload = function() {      
+                console.log(xhr.response); 
                 initMap(xhr.response);
             }
+            xhr.send();
         }
         function initMap(markers) {
             var map = L.map('map', {
@@ -104,13 +105,15 @@
                 iconRetinaUrl: myURL + 'markerxl.png',
                 iconSize: [18, 30],
                 iconAnchor: [9, 5],
-                popupAnchor: [0, -100],
+                popupAnchor: [0, -10],
             });
             
             for (var i = 0; i < markers.length; ++i) {
                 L.marker([markers[i].lat, markers[i].lng], { icon: myIcon })
                 .bindPopup(
-                    '<img src="https://graff.s3.eu-west-1.amazonaws.com/thumbs/' + markers[i].file_name + '">'
+                    L.popup().setContent(
+                    'link r sum'//'<img src="https://graff.s3.eu-west-1.amazonaws.com/thumbs/' + markers[i].file_name + '">'
+                    ).openOn(map)
                 )
                 .addTo(map)
             }
