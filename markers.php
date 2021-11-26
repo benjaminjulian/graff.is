@@ -1,4 +1,3 @@
-[
 <?php
     require "../creds.php";
     $mysqli = new mysqli("localhost", $mysql_user, $mysql_pass);
@@ -14,8 +13,7 @@
             echo 'lat: '.$row[4].',';
             echo 'lon: '.$row[5].',';
             echo 'date_taken: "'.$row[2].'"';
-            echo '}';
+            echo '},';
         }
     }
 ?>
-]
