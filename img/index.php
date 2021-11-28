@@ -6,10 +6,6 @@
     error_reporting(E_ALL);
 ?>
 <style>
-    #preview {
-        max-width: 80%;
-        height: auto;
-    }
     a {
         text-decoration: none;
     }
@@ -31,16 +27,24 @@
         if ($result = $mysqli -> query($q)) {
             $row = $result -> fetch_row();
             
-            echo "<ul>";
-            echo "<li>Tímasetning myndar: ".$row[3]."</li>";
-            echo "<li>Hnit: ".$row[5].", ".$row[6]."</li>";
-            echo "</ul>";
-            echo '<img id="preview" src="https://graff.s3.eu-west-1.amazonaws.com/fullres/'.$row[1].'">';
+            echo "<p>".$row[3]."</p>";
+            echo "<p>hnit: ".$row[5].", ".$row[6]."</p>";
+            echo "<br>";
+            echo '<img id="preview" style="max-width: 80%;" onclick="fullview();" src="https://graff.s3.eu-west-1.amazonaws.com/fullres/'.$row[1].'">';
         }
     } else {
         echo "<h2>Engin mynd valin.</h2>";
     }
 ?>
+<script>
+    function fullview() {
+        if (document.getElementById('preview').style.maxWidth == "80%") {
+            document.getElementById('preview').style.maxWidth = "";
+        } else {
+            document.getElementById('preview').style.maxWidth = "80%"
+        }
+    }
+</script>
 </div>
 </body>
 </html>

@@ -1,5 +1,9 @@
 <?php include("header.php"); ?>
     <style>
+        #display p {
+            font-size: 20px;
+        }
+
         #uploadlabel {
             border: 1px solid #ccc;
             display: inline-block;
