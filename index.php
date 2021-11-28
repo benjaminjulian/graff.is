@@ -14,7 +14,7 @@
         }
 
         #content {
-            width: 90%;
+            width: 95%;
             margin-left: auto;
             margin-right: auto;
             text-align: center;
@@ -51,13 +51,12 @@
             margin-top: 4px;
             margin-bottom: 4px;
             width: 50%;
-            min-width: 400px;
         }
         #options {
             position: relative;
             overflow: hidden;
-            min-width: 400px;
-            height: 20px;
+            height: 50px;
+            width: 80%;
             margin-left: auto;
             margin-right: auto;
         }
@@ -99,6 +98,105 @@
         p {
             font-size: 12px;
         }
+
+        #time-range p {
+            font-family:"Arial", sans-serif;
+            font-size:14px;
+            color:#333;
+        }
+        .ui-slider-horizontal {
+            height: 8px;
+            background: #D7D7D7;
+            border: 1px solid #BABABA;
+            box-shadow: 0 1px 0 #FFF, 0 1px 0 #CFCFCF inset;
+            clear: both;
+            margin: 8px 0;
+            -webkit-border-radius: 6px;
+            -moz-border-radius: 6px;
+            -ms-border-radius: 6px;
+            -o-border-radius: 6px;
+            border-radius: 6px;
+        }
+        .ui-slider {
+            position: relative;
+            text-align: left;
+        }
+        .ui-slider-horizontal .ui-slider-range {
+            top: -1px;
+            height: 100%;
+        }
+        .ui-slider .ui-slider-range {
+            position: absolute;
+            z-index: 1;
+            height: 8px;
+            font-size: .7em;
+            display: block;
+            border: 1px solid #5BA8E1;
+            box-shadow: 0 1px 0 #AAD6F6 inset;
+            -moz-border-radius: 6px;
+            -webkit-border-radius: 6px;
+            -khtml-border-radius: 6px;
+            border-radius: 6px;
+            background: #81B8F3;
+            background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgi…pZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==');
+            background-size: 100%;
+            background-image: -webkit-gradient(linear, 50% 0, 50% 100%, color-stop(0%, #A0D4F5), color-stop(100%, #81B8F3));
+            background-image: -webkit-linear-gradient(top, #A0D4F5, #81B8F3);
+            background-image: -moz-linear-gradient(top, #A0D4F5, #81B8F3);
+            background-image: -o-linear-gradient(top, #A0D4F5, #81B8F3);
+            background-image: linear-gradient(top, #A0D4F5, #81B8F3);
+        }
+        .ui-slider .ui-slider-handle {
+            border-radius: 50%;
+            background: #F9FBFA;
+            background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgi…pZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==');
+            background-size: 100%;
+            background-image: -webkit-gradient(linear, 50% 0, 50% 100%, color-stop(0%, #C7CED6), color-stop(100%, #F9FBFA));
+            background-image: -webkit-linear-gradient(top, #C7CED6, #F9FBFA);
+            background-image: -moz-linear-gradient(top, #C7CED6, #F9FBFA);
+            background-image: -o-linear-gradient(top, #C7CED6, #F9FBFA);
+            background-image: linear-gradient(top, #C7CED6, #F9FBFA);
+            width: 22px;
+            height: 22px;
+            -webkit-box-shadow: 0 2px 3px -1px rgba(0, 0, 0, 0.6), 0 -1px 0 1px rgba(0, 0, 0, 0.15) inset, 0 1px 0 1px rgba(255, 255, 255, 0.9) inset;
+            -moz-box-shadow: 0 2px 3px -1px rgba(0, 0, 0, 0.6), 0 -1px 0 1px rgba(0, 0, 0, 0.15) inset, 0 1px 0 1px rgba(255, 255, 255, 0.9) inset;
+            box-shadow: 0 2px 3px -1px rgba(0, 0, 0, 0.6), 0 -1px 0 1px rgba(0, 0, 0, 0.15) inset, 0 1px 0 1px rgba(255, 255, 255, 0.9) inset;
+            -webkit-transition: box-shadow .3s;
+            -moz-transition: box-shadow .3s;
+            -o-transition: box-shadow .3s;
+            transition: box-shadow .3s;
+        }
+        .ui-slider .ui-slider-handle {
+            position: absolute;
+            z-index: 2;
+            width: 22px;
+            height: 22px;
+            cursor: default;
+            border: none;
+            cursor: pointer;
+        }
+        .ui-slider .ui-slider-handle:after {
+            content:"";
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            top: 50%;
+            margin-top: -4px;
+            left: 50%;
+            margin-left: -4px;
+            background: #30A2D2;
+            -webkit-box-shadow: 0 1px 1px 1px rgba(22, 73, 163, 0.7) inset, 0 1px 0 0 #FFF;
+            -moz-box-shadow: 0 1px 1px 1px rgba(22, 73, 163, 0.7) inset, 0 1px 0 0 white;
+            box-shadow: 0 1px 1px 1px rgba(22, 73, 163, 0.7) inset, 0 1px 0 0 #FFF;
+        }
+        .ui-slider-horizontal .ui-slider-handle {
+            top: -.5em;
+            margin-left: -.6em;
+        }
+        .ui-slider a:focus {
+            outline:none;
+        }
     </style>
     <link
       rel="stylesheet"
@@ -117,6 +215,7 @@
       integrity="sha384-RFZC58YeKApoNsIbBxf4z6JJXmh+geBSgkCQXFyh+4tiFSJmJBt+2FbjxW7Ar16M"
       crossorigin="anonymous"
     ></script>
+    <script type="text/javascript" src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <script type="text/javascript" src="jpegmeta.js"></script>
     <title>graff.is</title>
  
@@ -136,11 +235,11 @@
         <hr>
         <div id="options">
             <div id="date-selection">
-                <input type="date" id="date_from" onfocusout="reloadMap();">
-                &mdash;
-                <input type="date" id="date_to" onfocusout="reloadMap();">
-                &nbsp;
-                <button type="button" onclick="reloadClean();">&#9003;</button>
+            <p><span id="date_from"></span> til <span id="date_to"></span></p>
+            
+            <div class="sliders_step1">
+                <div id="slider-range"></div>
+            </div>
             </div>
             <div id="display"><p id="img-link"></p></div>
         </div>
@@ -158,6 +257,37 @@
         
         loadMarkers();
 
+        function formatDT(__dt) {
+            var year = __dt.getFullYear();
+            var month = __dt.getMonth()+1;
+            var date = __dt.getDate();
+            return year + '-' + month.toString() + '-' + date.toString();
+        }
+
+        function setSlider(dt_from, dt_to) {
+            $('#date_from').html(dt_from);
+            $('#date_to').html(dt_to);
+            var min_val = Date.parse(dt_from)/1000/60/60/24;
+            var max_val = Date.parse(dt_to)/1000/60/60/24;
+
+            $("#slider-range").slider({
+                range: true,
+                min: min_val,
+                max: max_val,
+                step: 1,
+                values: [min_val, max_val],
+                stop: function (e, ui) {
+                    var dt_cur_from = new Date(ui.values[0]*1000*60*60*24); //.format("yyyy-mm-dd hh:ii:ss");
+                    $('#date_from').html(formatDT(dt_cur_from));
+
+                    var dt_cur_to = new Date(ui.values[1]*1000*60*60*24); //.format("yyyy-mm-dd hh:ii:ss");                
+                    $('#date_to').html(formatDT(dt_cur_to));
+
+                    reloadMap();
+                }
+            });
+        }
+
         function centerMap(position) {
             target = L.latLng(position.coords.latitude, position.coords.longitude);
             map.setView(target, 17);
@@ -169,24 +299,24 @@
 
         function reloadMap() {
             document.getElementById("album").innerHTML = '<div id="map"></div>';
-            loadMarkers();
+            center = map.getCenter();
+            zoom = map.getZoom();
+            loadMarkers(center, zoom);
         }
 
         function reloadClean() {
-            document.getElementById('date_from').value = "";
-            document.getElementById('date_to').value = "";
             reloadMap();
         }
 
-        function loadMarkers() {
-            dt_from = document.getElementById('date_from').value;
-            dt_to = document.getElementById('date_to').value;
+        function loadMarkers(center, zoom) {
+            dt_from = document.getElementById('date_from').innerText;
+            dt_to = document.getElementById('date_to').innerText;
 
             var xhr = new XMLHttpRequest();
             xhr.open('GET', 'markers.php?from=' + dt_from + '&to=' + dt_to, true);
             xhr.responseType = 'json';
             xhr.onload = function() {
-                initMap(xhr.response);
+                initMap(xhr.response, center, zoom);
             }
             xhr.send();
         }
@@ -198,11 +328,17 @@
             }
         }
 
-        function initMap(markers) {
+        function initMap(data, center, zoom) {
+            if (center == undefined) {
+                center = [64.0, -19.0];
+            }
+            if (zoom == undefined) {
+                zoom = 8;
+            }
             map = L.map('map', {
-                center: [20.0, 5.0],
+                center: center,
                 minZoom: 2,
-                zoom: 2,
+                zoom: zoom,
             });
             
             L.tileLayer('https://stamen-tiles.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.jpg', {
@@ -223,6 +359,10 @@
 
             var popups = [];
             var pins = [];
+            var dt_from = data.meta.min_date.substring(0,10);
+            var dt_to = data.meta.max_date.substring(0,10);
+
+            markers = data.markers;
             
             for (var i = 0; i < markers.length; ++i) {
                 popups[i] = L.popup({maxWidth: "auto", autoPan: false, className: 'popup-box'})
@@ -238,7 +378,16 @@
                     sendDisplayID(markers[i].id)
                 }
                 pins[i].on('click', sendDisplayID(markers[i].id));
+
+                if (markers[i].date_taken.substring(0,10) > dt_to) {
+                    dt_to = markers[i].date_taken.substring(0,10);
+                }
+                if (markers[i].date_taken.substring(0,10) < dt_from) {
+                    dt_from = markers[i].date_taken.substring(0,10);
+                }
             }
+
+            setSlider(dt_from, dt_to);
 
             document.querySelector(".leaflet-popup-pane").addEventListener("load", function (event) {
                 var tagName = event.target.tagName,
