@@ -1,0 +1,60 @@
+<head>
+    <meta charset="utf-8">
+    <style>
+        #options {
+            position: relative;
+            overflow: hidden;
+            width: 50%;
+            height: 20px;
+            border: 1px solid black;
+        }
+
+        #date-selection {
+            position: absolute;
+            top: 50%; right: 50%;
+            transform: translate(50%,-50%);
+            transition: 1s;
+        }
+
+        #display {
+            position: absolute;
+            top: 50%; right: 150%;
+            transform: translate(50%,-50%);
+            transition: 1s;
+        }
+
+        .show-display #display {
+            transition: 1s;
+            right: 50%;
+        }
+
+        .show-display #date-selection {
+            transition: 1s;
+            right: -50%;
+        }
+
+        .show-date-selection #display {
+            transition: 1s;
+            right: 150%;
+        }
+
+        .show-date-selection #date-selection {
+            transition: 1s;
+            right: 50%;
+        }
+    </style>
+</head>
+<div id="options">
+    <div id="date-selection"><span>frá --- til --- hreinsa</span></div>
+    <div id="display">gögn um mynd</div>
+</div>
+<button onclick="display();">display on</button>
+<button onclick="displayOff();">display off</button>
+<script>
+    function display() {
+        document.getElementById('options').className = "show-display";
+    }
+    function displayOff() {
+        document.getElementById('options').className = "show-date-selection";
+    }
+</script>

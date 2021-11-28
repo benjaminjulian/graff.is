@@ -2,18 +2,22 @@
 <html>
  
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=0.9">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <style>
         html {
             font-family: sans-serif;
         }
 
+        a {
+            color: #000;
+        }
+
         #content {
-            width: 450px;
+            width: 90%;
             margin-left: auto;
             margin-right: auto;
-
+            text-align: center;
         }
         
         #uploadlabel {
@@ -39,13 +43,55 @@
         }
 
         #map {
-            height: 440px;
+            height: 75vh;
             border: 1px solid #AAA;
         }
 
         hr {
             margin-top: 4px;
             margin-bottom: 4px;
+            width: 50%;
+        }
+        #options {
+            position: relative;
+            overflow: hidden;
+            width: 50%;
+            height: 20px;
+            border: 1px solid black;
+        }
+
+        #date-selection {
+            position: absolute;
+            top: 50%; right: 50%;
+            transform: translate(50%,-50%);
+            transition: 1s;
+        }
+
+        #display {
+            position: absolute;
+            top: 50%; right: 150%;
+            transform: translate(50%,-50%);
+            transition: 1s;
+        }
+
+        .show-display #display {
+            transition: 1s;
+            right: 50%;
+        }
+
+        .show-display #date-selection {
+            transition: 1s;
+            right: -50%;
+        }
+
+        .show-date-selection #display {
+            transition: 1s;
+            right: 150%;
+        }
+
+        .show-date-selection #date-selection {
+            transition: 1s;
+            right: 50%;
         }
  
     </style>
@@ -70,7 +116,8 @@
     <title>graff.is</title>
  
 </head>
- 
+ <!-- þessi lausn var þróuð í miklum flýti. heimasíða höfundar er benjaminjulian.com. kvartanir beinist þangað. -->
+ <!-- pakkar notaðir: jQuery, Leaflet&OSM með Stamen watercolor layer, github.com/bennoleslie/jsjpegmeta, aws-sdk-php -->
 <body>
     <div id="content">
         <h1>graff.is</h1>
@@ -78,24 +125,41 @@
             <span>
                 senda inn mynd
             </span>
-            <input type="file" name="file_to_upload" id="file_to_upload" class="upload" onchange="upgo()" multiple>
+            <input type="file" name="file_to_upload" id="file_to_upload" class="upload" onchange="upgo()">
         </label>
         <div id="progress_status"></div><div style="clear: left"></div>
         <hr>
         <div id="options">
-        <label for="date_from">frá</label><input type="date" id="date_from" onfocusout="reloadMap();">
-        <label for="date_to">til</label><input type="date" id="date_to" onfocusout="reloadMap();">
-        <button type="button" onclick="reloadClean();">hreinsa</button>
+            <div id="date-selection">
+                <input type="date" id="date_from" onfocusout="reloadMap();">
+                &mdash;
+                <input type="date" id="date_to" onfocusout="reloadMap();">
+                &nbsp;
+                <button type="button" onclick="reloadClean();">&#9003;</button>
+            </div>
         <hr>
         </div>
         <div id="album">
             <div id="map"></div>
         </div>
+        <hr>
+        <a href="#" onclick="huntDown();">súmma hingað</a>
+        <hr>
     </div>
     <script>
         var $j = this.JpegMeta.JpegFile;
+        var map;
         
         loadMarkers();
+
+        function centerMap(position) {
+            target = L.latLng(position.coords.latitude, position.coords.longitude);
+            map.setView(target, 17);
+        }
+
+        function huntDown() {
+            navigator.geolocation.getCurrentPosition(centerMap);
+        }
 
         function reloadMap() {
             document.getElementById("album").innerHTML = '<div id="map"></div>';
@@ -122,18 +186,18 @@
         }
 
         function initMap(markers) {
-            var map = L.map('map', {
+            map = L.map('map', {
                 center: [20.0, 5.0],
                 minZoom: 2,
                 zoom: 2,
             });
             
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            L.tileLayer('https://stamen-tiles.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.jpg', {
                 attribution:
-                '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+                '<a href="http://maps.stamen.com">Stamen</a> | <a href="https://www.openstreetmap.org/copyright">OSM</a>',
                 subdomains: ['a', 'b', 'c'],
             }).addTo(map);
-            
+
             var myURL = 'maps/';
             
             var myIcon = L.icon({
@@ -149,12 +213,18 @@
             
             for (var i = 0; i < markers.length; ++i) {
                 popups[i] = L.popup({maxWidth: "auto", autoPan: false, className: 'popup-box'})
-                    .setContent('<img src="https://graff.s3.eu-west-1.amazonaws.com/thumbs/' + markers[i].file_name + '"><br><span>' + markers[i].date_taken + '</span>');
+                    .setContent('<img src="https://graff.s3.eu-west-1.amazonaws.com/thumbs/'
+                                    + markers[i].file_name
+                                    + '"><br><span>' 
+                                    + markers[i].date_taken + '</span>');
                 pins[i] = L.marker([markers[i].lat, markers[i].lng], { icon: myIcon }).addTo(map);
                 pins[i].bindPopup(popups[i]);
+                if (window.location.hash.substr(1) == markers[i].id.toString()) {
+                    popups[i].openOn(map);
+                }
                 pins[i].on('click', function() {
                     this.openPopup();
-                    L.Util.stop(event);
+                    display(markers[i].id);
                 });
             }
 
@@ -166,6 +236,17 @@
                     popup.update();
                 }
                 }, true);
+        }
+
+        function display(id) {
+            if (id === undefined) {
+                window.location.hash = "";
+                document.getElementById('options').className = "show-date-selection";
+            } else {
+                document.getElementById('display').innerHTML = '<a href="/img?id=' + id + '">skoða mynd</a>';
+                document.getElementById('options').className = "show-display";
+                window.location.hash = id;
+            }
         }
 
         function upgo() {
@@ -194,6 +275,7 @@
                         xhr.onreadystatechange = function() {       
                             if(xhr.readyState==4 && xhr.status==200) {
                                 document.getElementById('progress_status').innerHTML = xhr.responseText;
+                                reloadMap();
                             }
                         }
                         
@@ -203,12 +285,6 @@
                             
                         });
 
-                        /*xhr.upload.onprogress = function(e){
-                            var done = e.position || e.loaded, total = e.totalSize || e.total
-                            var present = Math.floor(done/total*100)
-                            
-                            document.getElementById('progress_status').innerHTML = present + '%'
-                        }*/
                         xhr.upload.onprogress = function(e) 
                         {
                             var completed = 0;
