@@ -51,49 +51,54 @@
             margin-top: 4px;
             margin-bottom: 4px;
             width: 50%;
+            min-width: 400px;
         }
         #options {
             position: relative;
             overflow: hidden;
-            width: 50%;
+            min-width: 400px;
             height: 20px;
-            border: 1px solid black;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         #date-selection {
             position: absolute;
             top: 50%; right: 50%;
             transform: translate(50%,-50%);
-            transition: 1s;
+            transition: 0.3s;
         }
 
         #display {
             position: absolute;
             top: 50%; right: 150%;
             transform: translate(50%,-50%);
-            transition: 1s;
+            transition: 0.3s;
         }
 
         .show-display #display {
-            transition: 1s;
+            transition: 0.3s;
             right: 50%;
         }
 
         .show-display #date-selection {
-            transition: 1s;
+            transition: 0.3s;
             right: -50%;
         }
 
         .show-date-selection #display {
-            transition: 1s;
+            transition: 0.3s;
             right: 150%;
         }
 
         .show-date-selection #date-selection {
-            transition: 1s;
+            transition: 0.3s;
             right: 50%;
         }
- 
+
+        p {
+            font-size: 12px;
+        }
     </style>
     <link
       rel="stylesheet"
@@ -137,13 +142,14 @@
                 &nbsp;
                 <button type="button" onclick="reloadClean();">&#9003;</button>
             </div>
-        <hr>
+            <div id="display"><p id="img-link"></p></div>
         </div>
+        <hr>
         <div id="album">
             <div id="map"></div>
         </div>
         <hr>
-        <a href="#" onclick="huntDown();">súmma hingað</a>
+        <p><a href="#" onclick="huntDown();">súmma hingað</a></p>
         <hr>
     </div>
     <script>
@@ -185,6 +191,13 @@
             xhr.send();
         }
 
+        function sendDisplayID(id) {
+            return function() {
+                this.openPopup();
+                display(id);
+            }
+        }
+
         function initMap(markers) {
             map = L.map('map', {
                 center: [20.0, 5.0],
@@ -219,13 +232,12 @@
                                     + markers[i].date_taken + '</span>');
                 pins[i] = L.marker([markers[i].lat, markers[i].lng], { icon: myIcon }).addTo(map);
                 pins[i].bindPopup(popups[i]);
-                if (window.location.hash.substr(1) == markers[i].id.toString()) {
-                    popups[i].openOn(map);
+                popups[i].on('remove', function() { display(); });
+                if (window.location.hash.substr(1) == markers[i].id) {
+                    pins[i].fire('click');
+                    sendDisplayID(markers[i].id)
                 }
-                pins[i].on('click', function() {
-                    this.openPopup();
-                    display(markers[i].id);
-                });
+                pins[i].on('click', sendDisplayID(markers[i].id));
             }
 
             document.querySelector(".leaflet-popup-pane").addEventListener("load", function (event) {
@@ -243,7 +255,7 @@
                 window.location.hash = "";
                 document.getElementById('options').className = "show-date-selection";
             } else {
-                document.getElementById('display').innerHTML = '<a href="/img?id=' + id + '">skoða mynd</a>';
+                document.getElementById('img-link').innerHTML = '<a href="/img?id=' + id + '">skoða mynd</a>';
                 document.getElementById('options').className = "show-display";
                 window.location.hash = id;
             }

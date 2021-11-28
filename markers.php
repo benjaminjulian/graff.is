@@ -28,7 +28,7 @@
 
     if ($result = $mysqli -> query($q)) {
         while ($row = $result -> fetch_row()) {
-            array_push($json, array("id" => row[0], "file_name" => $row[1], "lat" => (float)$row[5], "lng" => (float)$row[6], "date_taken" => $row[3]));
+            array_push($json, array("id" => $row[0], "file_name" => $row[1], "lat" => (float)$row[5], "lng" => (float)$row[6], "date_taken" => $row[3]));
         }
     }
 
