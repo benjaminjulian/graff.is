@@ -26,7 +26,7 @@
     $markers = [];
     $meta = [];
 
-    $q = "SELECT * FROM graffiti WHERE date_taken > '$date_from' AND date_taken < '$date_to'";
+    $q = "SELECT * FROM graffiti WHERE DATE(date_taken) >= '$date_from' AND DATE(date_taken) <= '$date_to'";
 
     if ($result = $mysqli -> query($q)) {
         while ($row = $result -> fetch_row()) {
@@ -42,7 +42,7 @@
         $meta = array("min_date" => $row[0], "max_date" => $row[1]);
     }
 
-    $json = [$markers, $meta];
+    $json = array("markers" => $markers, "meta" => $meta);
 
     echo json_encode($json);
 ?>

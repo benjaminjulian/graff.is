@@ -3,14 +3,33 @@
  
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <link rel="stylesheet" href="https://use.typekit.net/upb2iby.css">
     <style>
         html {
-            font-family: sans-serif;
+            font-family: burnaby-stencil;
+            font-weight: 100;
+        }
+
+        h1 {
+            font-weight: 700;
+            margin-top: 10px;
+            margin-bottom: 10px;
         }
 
         a {
             color: #000;
+        }
+
+        hr {
+            margin-top: 4px;
+            margin-bottom: 4px;
+            width: 50%;
+        }
+
+        p {
+            font-size: 14px;
+            margin-top: 4px;
+            margin-bottom: 4px;
         }
 
         #content {
@@ -23,13 +42,15 @@
         #uploadlabel {
             border: 1px solid #ccc;
             display: inline-block;
+            vertical-align: middle;
             padding: 7px 15px;
             cursor: pointer;
             border-radius: 5px;
-            background-color: blue;
-            color: #ffffff;
+            background-color: white;
+            color: #404040;
             margin-left: auto;
             margin-right: auto;
+            font-size: 16px
         }
         #file_to_upload {
             display: none;
@@ -43,19 +64,14 @@
         }
 
         #map {
-            height: 75vh;
+            height: 80vh;
             border: 1px solid #AAA;
         }
 
-        hr {
-            margin-top: 4px;
-            margin-bottom: 4px;
-            width: 50%;
-        }
         #options {
             position: relative;
             overflow: hidden;
-            height: 50px;
+            height: 48px;
             width: 80%;
             margin-left: auto;
             margin-right: auto;
@@ -63,6 +79,8 @@
 
         #date-selection {
             position: absolute;
+            width: 80%;
+            max-width: 500px;
             top: 50%; right: 50%;
             transform: translate(50%,-50%);
             transition: 0.3s;
@@ -95,15 +113,6 @@
             right: 50%;
         }
 
-        p {
-            font-size: 12px;
-        }
-
-        #time-range p {
-            font-family:"Arial", sans-serif;
-            font-size:14px;
-            color:#333;
-        }
         .ui-slider-horizontal {
             height: 8px;
             background: #D7D7D7;
@@ -216,6 +225,7 @@
       crossorigin="anonymous"
     ></script>
     <script type="text/javascript" src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
     <script type="text/javascript" src="jpegmeta.js"></script>
     <title>graff.is</title>
  
@@ -224,13 +234,16 @@
  <!-- pakkar notaðir: jQuery, Leaflet&OSM með Stamen watercolor layer, github.com/bennoleslie/jsjpegmeta, aws-sdk-php -->
 <body>
     <div id="content">
-        <h1>graff.is</h1>
-        <label id="uploadlabel">
-            <span>
-                senda inn mynd
-            </span>
-            <input type="file" name="file_to_upload" id="file_to_upload" class="upload" onchange="upgo()">
-        </label>
+        <h1>
+            graff.is
+            &mdash;
+            <label id="uploadlabel">
+                <span>
+                    senda mynd
+                </span>
+                <input type="file" name="file_to_upload" id="file_to_upload" class="upload" onchange="upgo()">
+            </label>
+        </h1>
         <div id="progress_status"></div><div style="clear: left"></div>
         <hr>
         <div id="options">
@@ -330,10 +343,11 @@
 
         function initMap(data, center, zoom) {
             if (center == undefined) {
-                center = [64.0, -19.0];
+                setSlider(data.meta.min_date.substring(0,10), data.meta.max_date.substring(0,10));
+                center = [65.0, -19.0];
             }
             if (zoom == undefined) {
-                zoom = 8;
+                zoom = 6;
             }
             map = L.map('map', {
                 center: center,
@@ -359,8 +373,6 @@
 
             var popups = [];
             var pins = [];
-            var dt_from = data.meta.min_date.substring(0,10);
-            var dt_to = data.meta.max_date.substring(0,10);
 
             markers = data.markers;
             
@@ -378,16 +390,7 @@
                     sendDisplayID(markers[i].id)
                 }
                 pins[i].on('click', sendDisplayID(markers[i].id));
-
-                if (markers[i].date_taken.substring(0,10) > dt_to) {
-                    dt_to = markers[i].date_taken.substring(0,10);
-                }
-                if (markers[i].date_taken.substring(0,10) < dt_from) {
-                    dt_from = markers[i].date_taken.substring(0,10);
-                }
             }
-
-            setSlider(dt_from, dt_to);
 
             document.querySelector(".leaflet-popup-pane").addEventListener("load", function (event) {
                 var tagName = event.target.tagName,
@@ -420,15 +423,17 @@
             for(var i=0, j=uploader.files.length; i<j; i++) {
                 fname = uploader.files[i].name;
                 dataurl_reader.readAsDataURL(uploader.files[i]);
-                dataurl_reader.onloadend = function() {
+                dataurl_reader.onloadend = function(e) {
+                    console.log(e);
                     var jpeg = new $j(atob(this.result.replace(/^.*?,/,'')), uploader.files[i]);
 
                     if (jpeg.gps.longitude) {
+                        console.log(jpeg);
                         var uploaderForm = new FormData(); // Create new FormData
                         uploaderForm.append("action", "post"); // append extra parameters if you wish.
                         uploaderForm.append("image", dataurl_reader.result); // append the next file for upload
-                        uploaderForm.append("longitude", jpeg.gps.longitude);
-                        uploaderForm.append("latitude", jpeg.gps.latitude);
+                        uploaderForm.append("longitude", jpeg.gps.longitude.value);
+                        uploaderForm.append("latitude", jpeg.gps.latitude.value);
                         uploaderForm.append("date_taken", jpeg.exif.DateTimeOriginal.value);
                         uploaderForm.append("name", fname);
 
