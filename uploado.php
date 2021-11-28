@@ -6,7 +6,7 @@
     $file_name = $_FILES['image']['name'];   
     $temp_file_location = $_FILES['image']['tmp_name'];
 
-/*
+/* dropped after blob upload was removed
 list($type, $data) = explode(';', $_POST['image']);
 list(, $data) = explode(',', $data);
 $file_data = base64_decode($data);
