@@ -4,6 +4,19 @@ Logging graffiti
 ## what does this run on?
 This is a PHP page, currently running off a PHP/Apache2/MySQL server.
 
+### credentials
+It requires a `creds.php` file, located one directory above the repository (given the current PHP includes). It defines four variables:
+
+```PHP
+// for AWS access:
+$creds_key
+$creds_secret
+// for MySQL access
+$mysql_user
+$mysql_pass
+```
+
+### MySQL
 Database name: `base_db`
 
 To create the "graffiti" table:

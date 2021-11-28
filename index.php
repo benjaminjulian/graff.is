@@ -1,12 +1,5 @@
 <?php include("header.php"); ?>
     <style>
-        #content {
-            width: 95%;
-            margin-left: auto;
-            margin-right: auto;
-            text-align: center;
-        }
-        
         #uploadlabel {
             border: 1px solid #ccc;
             display: inline-block;

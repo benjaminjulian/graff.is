@@ -32,4 +32,11 @@
             margin-top: 4px;
             margin-bottom: 4px;
         }
+        
+        #content {
+            width: 95%;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+        }
     </style>
