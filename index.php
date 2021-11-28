@@ -421,21 +421,19 @@
 
             // We'll send a new post for each file.
             for(var i=0, j=uploader.files.length; i<j; i++) {
-                fname = uploader.files[i].name;
+                console.log("uploading: file before and after");
+                upload_data = uploader.files[i];
                 dataurl_reader.readAsDataURL(uploader.files[i]);
                 dataurl_reader.onloadend = function(e) {
-                    console.log(e);
                     var jpeg = new $j(atob(this.result.replace(/^.*?,/,'')), uploader.files[i]);
 
                     if (jpeg.gps.longitude) {
-                        console.log(jpeg);
                         var uploaderForm = new FormData(); // Create new FormData
-                        uploaderForm.append("action", "post"); // append extra parameters if you wish.
-                        uploaderForm.append("image", dataurl_reader.result); // append the next file for upload
+                        uploaderForm.append("action", "upload"); // append extra parameters if you wish.
+                        uploaderForm.append("image", upload_data); // append the next file for upload
                         uploaderForm.append("longitude", jpeg.gps.longitude.value);
                         uploaderForm.append("latitude", jpeg.gps.latitude.value);
                         uploaderForm.append("date_taken", jpeg.exif.DateTimeOriginal.value);
-                        uploaderForm.append("name", fname);
 
                         var xhr = new XMLHttpRequest();
                         xhr.onreadystatechange = function() {       

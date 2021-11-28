@@ -2,13 +2,11 @@
 <?php
     require "../creds.php";
     require 'vendor/autoload.php';
-/*
+
     $file_name = $_FILES['image']['name'];   
-    $temp_file_location = $_FILES['image']['tmp_name']; 
+    $temp_file_location = $_FILES['image']['tmp_name'];
 
-    echo getimagesize($_FILES["image"]["tmp_name"]);
-*/
-
+/*
 list($type, $data) = explode(';', $_POST['image']);
 list(, $data) = explode(',', $data);
 $file_data = base64_decode($data);
@@ -34,6 +32,7 @@ if(in_array($file_type, [ 'jpeg', 'png', 'gif' ])) {
     $temp_file_location = "temp_".$file_name;
 	file_put_contents($temp_file_location, $file_data);
 }
+*/
     $date = $_POST['date_taken'];
     $lat = $_POST['latitude'];
     $lon = $_POST['longitude'];
