@@ -30,36 +30,36 @@
  <!-- þessi lausn var þróuð í miklum flýti. heimasíða höfundar er benjaminjulian.com. kvartanir beinist þangað. -->
  <!-- pakkar notaðir: jQuery, Leaflet&OSM með Stamen watercolor layer, github.com/bennoleslie/jsjpegmeta, aws-sdk-php -->
 <body>
-    <div id="content">
-        <h1>
-            graff.is
-            &mdash;
+    <div class="content">
+        <div class="header">
+            <h1>
+                graff.is
+            </h1>
+            <span class="header-spacer"> &mdash; </span>
             <label id="uploadlabel">
                 <span>
                     senda mynd
                 </span>
                 <input type="file" name="file_to_upload" id="file_to_upload" class="upload" onchange="upgo()">
             </label>
-        </h1>
-        <div id="progress_status"></div><div style="clear: left"></div>
-        <hr>
-        <div id="options">
-            <div id="date-selection">
-            <p><span id="date_from"></span> til <span id="date_to"></span></p>
-            
-            <div class="sliders_step1">
-                <div id="slider-range"></div>
+            <div id="progress_status"></div>
+            <span class="header-spacer"> &mdash; </span>
+            <div id="options">
+                <div id="date-selection">
+                <p><span id="date_from"></span> til <span id="date_to"></span></p>
+                
+                <div class="sliders_step1">
+                    <div id="slider-range"></div>
+                </div>
+                </div>
+                <div id="display"><p id="img-link"></p></div>
             </div>
-            </div>
-            <div id="display"><p id="img-link"></p></div>
         </div>
-        <hr>
         <div id="album">
             <div id="map"></div>
         </div>
         <hr>
         <p><a href="#" onclick="huntDown();">súmma hingað</a></p>
-        <hr>
     </div>
     <script>
         var $j = this.JpegMeta.JpegFile;

@@ -25,11 +25,27 @@ p {
     margin-bottom: 4px;
 }
 
-#content {
+.header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    border-bottom: 1px solid;
+    margin-bottom: 10px;
+}
+
+.header-spacer {
+    font-weight: 700;
+    margin: 10px;
+    font-size: 2em;
+}
+
+.content {
     width: 95%;
     margin-left: auto;
     margin-right: auto;
     text-align: center;
+    display: flex;
+    flex-direction: column;
 }
 
 #uploadlabel {
@@ -41,10 +57,9 @@ p {
     border-radius: 5px;
     background-color: white;
     color: #404040;
-    margin-left: auto;
-    margin-right: auto;
     font-size: 16px
 }
+
 #file_to_upload {
     display: none;
 }
@@ -57,7 +72,7 @@ p {
 }
 
 #map {
-    height: 80vh;
+    height: 90vh;
     border: 1px solid #AAA;
 }
 
@@ -65,9 +80,10 @@ p {
     position: relative;
     overflow: hidden;
     height: 48px;
-    width: 80%;
+    flex: 0 1 200px;
+    /* width: 80%;
     margin-left: auto;
-    margin-right: auto;
+    margin-right: auto; */
 }
 
 #date-selection {
