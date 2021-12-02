@@ -275,10 +275,15 @@
             navigator.geolocation.getCurrentPosition(centerMap);
         }
 
-        function reloadMap() {
+        function reloadMap(lat, lon) {
             document.getElementById("album").innerHTML = '<div id="map"></div>';
-            center = map.getCenter();
-            zoom = map.getZoom();
+            if (lat == undefined) {
+                center = map.getCenter();
+                zoom = map.getZoom();
+            } else {
+                center = [lat, lon];
+                zoom = 17;
+            }
             loadMarkers(center, zoom);
         }
 
@@ -386,13 +391,12 @@
 
             // We'll send a new post for each file.
             for(var i=0, j=uploader.files.length; i<j; i++) {
-                console.log("uploading: file before and after");
                 upload_data = uploader.files[i];
                 dataurl_reader.readAsDataURL(uploader.files[i]);
                 dataurl_reader.onloadend = function(e) {
                     var jpeg = new $j(atob(this.result.replace(/^.*?,/,'')), uploader.files[i]);
 
-                    if (jpeg.gps.longitude) {
+                    if (jpeg.gps) {
                         var uploaderForm = new FormData(); // Create new FormData
                         uploaderForm.append("action", "upload"); // append extra parameters if you wish.
                         uploaderForm.append("image", upload_data); // append the next file for upload
@@ -404,7 +408,7 @@
                         xhr.onreadystatechange = function() {       
                             if(xhr.readyState==4 && xhr.status==200) {
                                 document.getElementById('progress_status').innerHTML = xhr.responseText;
-                                reloadMap();
+                                reloadMap(jpeg.gps.latitude.value, jpeg.gps.longitude.value);
                             }
                         }
                         
@@ -437,7 +441,7 @@
                         xhr.open("POST","uploado.php");
                         xhr.send(uploaderForm);
                     } else {
-                        $("#progress_status").append('<span class="progressor" >Ekkert EXIF</span>');
+                        $("#progress_status").append('<span class="progressor">vantar staðsetningargögn</span>');
                     }
                 }
             }
