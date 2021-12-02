@@ -177,6 +177,7 @@
 
             var markers = data.markers;
             var cluster = L.markerClusterGroup();
+            var fire = -1;
             
             for (var i = 0; i < markers.length; ++i) {
                 popups[i] = L.popup({maxWidth: "auto", autoPan: false, className: 'popup-box'})
@@ -187,16 +188,19 @@
                 pins[i] = L.marker([markers[i].lat, markers[i].lng], { icon: myIcon });//.addTo(map);
                 pins[i].bindPopup(popups[i]);
                 popups[i].on('remove', function() { display(); });
-                if (window.location.hash.substr(1) == markers[i].id) {
-                    pins[i].fire('click');
-                    sendDisplayID(markers[i].id)
-                }
                 pins[i].on('click', sendDisplayID(markers[i].id));
+                if (window.location.hash.substr(1) == markers[i].id) {
+                    fire = i;
+                    centerMap({'coords':{'latitude':markers[i].lat,'longitude':markers[i].lng}});
+                }
 
                 cluster.addLayer(pins[i]);
             }
 
             map.addLayer(cluster);
+            if (fire >= 0) {
+                pins[fire].fire('click');
+            }
 
             document.querySelector(".leaflet-popup-pane").addEventListener("load", function (event) {
                 var tagName = event.target.tagName,
