@@ -1,177 +1,10 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/styles.css">
+    <link rel="stylesheet" href="https://use.typekit.net/upb2iby.css">
 <?php include("header.php"); ?>
-    <style>
-        #display p {
-            font-size: 20px;
-        }
-
-        #uploadlabel {
-            border: 1px solid #ccc;
-            display: inline-block;
-            vertical-align: middle;
-            padding: 7px 15px;
-            cursor: pointer;
-            border-radius: 5px;
-            background-color: white;
-            color: #404040;
-            margin-left: auto;
-            margin-right: auto;
-            font-size: 16px
-        }
-        #file_to_upload {
-            display: none;
-        }
-        .progressor {
-            padding: 5px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            float: left;
-            margin: 3px;
-        }
-
-        #map {
-            height: 80vh;
-            border: 1px solid #AAA;
-        }
-
-        #options {
-            position: relative;
-            overflow: hidden;
-            height: 48px;
-            width: 80%;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        #date-selection {
-            position: absolute;
-            width: 80%;
-            max-width: 500px;
-            top: 50%; right: 50%;
-            transform: translate(50%,-50%);
-            transition: 0.3s;
-        }
-
-        #display {
-            position: absolute;
-            top: 50%; right: 150%;
-            transform: translate(50%,-50%);
-            transition: 0.3s;
-        }
-
-        .show-display #display {
-            transition: 0.3s;
-            right: 50%;
-        }
-
-        .show-display #date-selection {
-            transition: 0.3s;
-            right: -50%;
-        }
-
-        .show-date-selection #display {
-            transition: 0.3s;
-            right: 150%;
-        }
-
-        .show-date-selection #date-selection {
-            transition: 0.3s;
-            right: 50%;
-        }
-
-        .ui-slider-horizontal {
-            height: 8px;
-            background: #D7D7D7;
-            border: 1px solid #BABABA;
-            box-shadow: 0 1px 0 #FFF, 0 1px 0 #CFCFCF inset;
-            clear: both;
-            margin: 8px 0;
-            -webkit-border-radius: 6px;
-            -moz-border-radius: 6px;
-            -ms-border-radius: 6px;
-            -o-border-radius: 6px;
-            border-radius: 6px;
-        }
-        .ui-slider {
-            position: relative;
-            text-align: left;
-        }
-        .ui-slider-horizontal .ui-slider-range {
-            top: -1px;
-            height: 100%;
-        }
-        .ui-slider .ui-slider-range {
-            position: absolute;
-            z-index: 1;
-            height: 8px;
-            font-size: .7em;
-            display: block;
-            border: 1px solid #5BA8E1;
-            box-shadow: 0 1px 0 #AAD6F6 inset;
-            -moz-border-radius: 6px;
-            -webkit-border-radius: 6px;
-            -khtml-border-radius: 6px;
-            border-radius: 6px;
-            background: #81B8F3;
-            background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgi…pZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==');
-            background-size: 100%;
-            background-image: -webkit-gradient(linear, 50% 0, 50% 100%, color-stop(0%, #A0D4F5), color-stop(100%, #81B8F3));
-            background-image: -webkit-linear-gradient(top, #A0D4F5, #81B8F3);
-            background-image: -moz-linear-gradient(top, #A0D4F5, #81B8F3);
-            background-image: -o-linear-gradient(top, #A0D4F5, #81B8F3);
-            background-image: linear-gradient(top, #A0D4F5, #81B8F3);
-        }
-        .ui-slider .ui-slider-handle {
-            border-radius: 50%;
-            background: #F9FBFA;
-            background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgi…pZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==');
-            background-size: 100%;
-            background-image: -webkit-gradient(linear, 50% 0, 50% 100%, color-stop(0%, #C7CED6), color-stop(100%, #F9FBFA));
-            background-image: -webkit-linear-gradient(top, #C7CED6, #F9FBFA);
-            background-image: -moz-linear-gradient(top, #C7CED6, #F9FBFA);
-            background-image: -o-linear-gradient(top, #C7CED6, #F9FBFA);
-            background-image: linear-gradient(top, #C7CED6, #F9FBFA);
-            width: 22px;
-            height: 22px;
-            -webkit-box-shadow: 0 2px 3px -1px rgba(0, 0, 0, 0.6), 0 -1px 0 1px rgba(0, 0, 0, 0.15) inset, 0 1px 0 1px rgba(255, 255, 255, 0.9) inset;
-            -moz-box-shadow: 0 2px 3px -1px rgba(0, 0, 0, 0.6), 0 -1px 0 1px rgba(0, 0, 0, 0.15) inset, 0 1px 0 1px rgba(255, 255, 255, 0.9) inset;
-            box-shadow: 0 2px 3px -1px rgba(0, 0, 0, 0.6), 0 -1px 0 1px rgba(0, 0, 0, 0.15) inset, 0 1px 0 1px rgba(255, 255, 255, 0.9) inset;
-            -webkit-transition: box-shadow .3s;
-            -moz-transition: box-shadow .3s;
-            -o-transition: box-shadow .3s;
-            transition: box-shadow .3s;
-        }
-        .ui-slider .ui-slider-handle {
-            position: absolute;
-            z-index: 2;
-            width: 22px;
-            height: 22px;
-            cursor: default;
-            border: none;
-            cursor: pointer;
-        }
-        .ui-slider .ui-slider-handle:after {
-            content:"";
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            top: 50%;
-            margin-top: -4px;
-            left: 50%;
-            margin-left: -4px;
-            background: #30A2D2;
-            -webkit-box-shadow: 0 1px 1px 1px rgba(22, 73, 163, 0.7) inset, 0 1px 0 0 #FFF;
-            -moz-box-shadow: 0 1px 1px 1px rgba(22, 73, 163, 0.7) inset, 0 1px 0 0 white;
-            box-shadow: 0 1px 1px 1px rgba(22, 73, 163, 0.7) inset, 0 1px 0 0 #FFF;
-        }
-        .ui-slider-horizontal .ui-slider-handle {
-            top: -.5em;
-            margin-left: -.6em;
-        }
-        .ui-slider a:focus {
-            outline:none;
-        }
-    </style>
     <link
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
@@ -193,41 +26,40 @@
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
     <script type="text/javascript" src="jpegmeta.js"></script>
     <title>graff.is</title>
- 
 </head>
  <!-- þessi lausn var þróuð í miklum flýti. heimasíða höfundar er benjaminjulian.com. kvartanir beinist þangað. -->
  <!-- pakkar notaðir: jQuery, Leaflet&OSM með Stamen watercolor layer, github.com/bennoleslie/jsjpegmeta, aws-sdk-php -->
 <body>
-    <div id="content">
-        <h1>
-            graff.is
-            &mdash;
+    <div class="content">
+        <div class="header">
+            <h1>
+                graff.is
+            </h1>
+            <span class="header-spacer"> &mdash; </span>
             <label id="uploadlabel">
                 <span>
                     senda mynd
                 </span>
                 <input type="file" name="file_to_upload" id="file_to_upload" class="upload" onchange="upgo()">
             </label>
-        </h1>
-        <div id="progress_status"></div><div style="clear: left"></div>
-        <hr>
-        <div id="options">
-            <div id="date-selection">
-            <p><span id="date_from"></span> til <span id="date_to"></span></p>
-            
-            <div class="sliders_step1">
-                <div id="slider-range"></div>
+            <div id="progress_status"></div>
+            <span class="header-spacer"> &mdash; </span>
+            <div id="options">
+                <div id="date-selection">
+                <p><span id="date_from"></span> til <span id="date_to"></span></p>
+                
+                <div class="sliders_step1">
+                    <div id="slider-range"></div>
+                </div>
+                </div>
+                <div id="display"><p id="img-link"></p></div>
             </div>
-            </div>
-            <div id="display"><p id="img-link"></p></div>
         </div>
-        <hr>
         <div id="album">
             <div id="map"></div>
         </div>
         <hr>
         <p><a href="#" onclick="huntDown();">súmma hingað</a></p>
-        <hr>
     </div>
     <script>
         var $j = this.JpegMeta.JpegFile;
