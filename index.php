@@ -21,6 +21,9 @@
     <script type="text/javascript" src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
     <script type="text/javascript" src="jpegmeta.js"></script>
+    <link rel="stylesheet" href="../dist/MarkerCluster.css" />
+	<link rel="stylesheet" href="../dist/MarkerCluster.Default.css" />
+	<script src="../dist/leaflet.markercluster.js"></script>
     <title>graff.is</title>
 </head>
  <!-- þessi lausn var þróuð í miklum flýti. heimasíða höfundar er benjaminjulian.com. kvartanir beinist þangað. -->
@@ -159,11 +162,11 @@
                 subdomains: ['a', 'b', 'c'],
             }).addTo(map);
 
-            var myURL = 'maps/';
+            var mapAssetUrl = 'maps/';
             
             var myIcon = L.icon({
-                iconUrl: myURL + 'marker.png',
-                iconRetinaUrl: myURL + 'markerxl.png',
+                iconUrl: mapAssetUrl + 'marker.png',
+                iconRetinaUrl: mapAssetUrl + 'markerxl.png',
                 iconSize: [18, 30],
                 iconAnchor: [9, 5],
                 popupAnchor: [0, -10],
@@ -172,7 +175,8 @@
             var popups = [];
             var pins = [];
 
-            markers = data.markers;
+            var markers = data.markers;
+            var cluster = L.markerClusterGroup();
             
             for (var i = 0; i < markers.length; ++i) {
                 popups[i] = L.popup({maxWidth: "auto", autoPan: false, className: 'popup-box'})
@@ -180,7 +184,7 @@
                                     + markers[i].file_name
                                     + '"><br><span>' 
                                     + markers[i].date_taken + '</span>');
-                pins[i] = L.marker([markers[i].lat, markers[i].lng], { icon: myIcon }).addTo(map);
+                pins[i] = L.marker([markers[i].lat, markers[i].lng], { icon: myIcon });//.addTo(map);
                 pins[i].bindPopup(popups[i]);
                 popups[i].on('remove', function() { display(); });
                 if (window.location.hash.substr(1) == markers[i].id) {
@@ -188,7 +192,11 @@
                     sendDisplayID(markers[i].id)
                 }
                 pins[i].on('click', sendDisplayID(markers[i].id));
+
+                cluster.addLayer(pins[i]);
             }
+
+            map.addLayer(cluster);
 
             document.querySelector(".leaflet-popup-pane").addEventListener("load", function (event) {
                 var tagName = event.target.tagName,
