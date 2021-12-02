@@ -1,10 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<?php include("header.php"); ?>
     <link rel="stylesheet" href="assets/styles.css">
     <link rel="stylesheet" href="https://use.typekit.net/upb2iby.css">
-<?php include("header.php"); ?>
     <link
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
