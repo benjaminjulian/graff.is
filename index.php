@@ -35,15 +35,15 @@
             <h1>
                 graff.is
             </h1>
-            <span class="header-spacer"> &mdash; </span>
-            <label id="uploadlabel">
-                <span>
-                    senda mynd
-                </span>
-                <input type="file" name="file_to_upload" id="file_to_upload" class="upload" onchange="upgo()">
-            </label>
-            <div id="progress_status"></div>
-            <span class="header-spacer"> &mdash; </span>
+            <div class="upload">
+                <label id="uploadlabel">
+                    <span>
+                        senda mynd
+                    </span>
+                    <input type="file" name="file_to_upload" id="file_to_upload" class="upload" onchange="upgo()">
+                </label>
+                <div id="progress_status"></div>
+            </div>
             <div id="options">
                 <div id="date-selection">
                 <p><span id="date_from"></span> til <span id="date_to"></span></p>
