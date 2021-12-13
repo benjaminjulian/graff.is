@@ -27,7 +27,7 @@ p {
 
 .header {
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
     border-bottom: 1px solid;
     margin-bottom: 10px;
@@ -85,15 +85,11 @@ p {
     overflow: hidden;
     height: 48px;
     flex: 1 1 50vw;
-    /* width: 80%;
-    margin-left: auto;
-    margin-right: auto; */
 }
 
 #date-selection {
     position: absolute;
-    width: 80%;
-    max-width: 500px;
+    width: calc(100% - 50px);
     top: 50%; right: 50%;
     transform: translate(50%,-50%);
     transition: 0.3s;

@@ -1,10 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<?php include("header.php"); ?>
     <link rel="stylesheet" href="assets/styles.css">
     <link rel="stylesheet" href="https://use.typekit.net/upb2iby.css">
-<?php include("header.php"); ?>
     <link
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
@@ -25,6 +21,9 @@
     <script type="text/javascript" src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
     <script type="text/javascript" src="jpegmeta.js"></script>
+    <link rel="stylesheet" href="../dist/MarkerCluster.css" />
+	<link rel="stylesheet" href="../dist/MarkerCluster.Default.css" />
+	<script src="../dist/leaflet.markercluster.js"></script>
     <title>graff.is</title>
 </head>
  <!-- þessi lausn var þróuð í miklum flýti. heimasíða höfundar er benjaminjulian.com. kvartanir beinist þangað. -->
@@ -107,10 +106,15 @@
             navigator.geolocation.getCurrentPosition(centerMap);
         }
 
-        function reloadMap() {
+        function reloadMap(lat, lon) {
             document.getElementById("album").innerHTML = '<div id="map"></div>';
-            center = map.getCenter();
-            zoom = map.getZoom();
+            if (lat == undefined) {
+                center = map.getCenter();
+                zoom = map.getZoom();
+            } else {
+                center = [lat, lon];
+                zoom = 17;
+            }
             loadMarkers(center, zoom);
         }
 
@@ -158,11 +162,11 @@
                 subdomains: ['a', 'b', 'c'],
             }).addTo(map);
 
-            var myURL = 'maps/';
+            var mapAssetUrl = 'maps/';
             
             var myIcon = L.icon({
-                iconUrl: myURL + 'marker.png',
-                iconRetinaUrl: myURL + 'markerxl.png',
+                iconUrl: mapAssetUrl + 'marker.png',
+                iconRetinaUrl: mapAssetUrl + 'markerxl.png',
                 iconSize: [18, 30],
                 iconAnchor: [9, 5],
                 popupAnchor: [0, -10],
@@ -171,7 +175,9 @@
             var popups = [];
             var pins = [];
 
-            markers = data.markers;
+            var markers = data.markers;
+            var cluster = L.markerClusterGroup();
+            var fire = -1;
             
             for (var i = 0; i < markers.length; ++i) {
                 popups[i] = L.popup({maxWidth: "auto", autoPan: false, className: 'popup-box'})
@@ -179,14 +185,21 @@
                                     + markers[i].file_name
                                     + '"><br><span>' 
                                     + markers[i].date_taken + '</span>');
-                pins[i] = L.marker([markers[i].lat, markers[i].lng], { icon: myIcon }).addTo(map);
+                pins[i] = L.marker([markers[i].lat, markers[i].lng], { icon: myIcon });//.addTo(map);
                 pins[i].bindPopup(popups[i]);
                 popups[i].on('remove', function() { display(); });
-                if (window.location.hash.substr(1) == markers[i].id) {
-                    pins[i].fire('click');
-                    sendDisplayID(markers[i].id)
-                }
                 pins[i].on('click', sendDisplayID(markers[i].id));
+                if (window.location.hash.substr(1) == markers[i].id) {
+                    fire = i;
+                    centerMap({'coords':{'latitude':markers[i].lat,'longitude':markers[i].lng}});
+                }
+
+                cluster.addLayer(pins[i]);
+            }
+
+            map.addLayer(cluster);
+            if (fire >= 0) {
+                pins[fire].fire('click');
             }
 
             document.querySelector(".leaflet-popup-pane").addEventListener("load", function (event) {
@@ -218,13 +231,12 @@
 
             // We'll send a new post for each file.
             for(var i=0, j=uploader.files.length; i<j; i++) {
-                console.log("uploading: file before and after");
                 upload_data = uploader.files[i];
                 dataurl_reader.readAsDataURL(uploader.files[i]);
                 dataurl_reader.onloadend = function(e) {
                     var jpeg = new $j(atob(this.result.replace(/^.*?,/,'')), uploader.files[i]);
 
-                    if (jpeg.gps.longitude) {
+                    if (jpeg.gps) {
                         var uploaderForm = new FormData(); // Create new FormData
                         uploaderForm.append("action", "upload"); // append extra parameters if you wish.
                         uploaderForm.append("image", upload_data); // append the next file for upload
@@ -236,7 +248,7 @@
                         xhr.onreadystatechange = function() {       
                             if(xhr.readyState==4 && xhr.status==200) {
                                 document.getElementById('progress_status').innerHTML = xhr.responseText;
-                                reloadMap();
+                                reloadMap(jpeg.gps.latitude.value, jpeg.gps.longitude.value);
                             }
                         }
                         
@@ -269,7 +281,7 @@
                         xhr.open("POST","uploado.php");
                         xhr.send(uploaderForm);
                     } else {
-                        $("#progress_status").append('<span class="progressor" >Ekkert EXIF</span>');
+                        $("#progress_status").append('<span class="progressor">vantar staðsetningargögn</span>');
                     }
                 }
             }

@@ -4,7 +4,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://use.typekit.net/upb2iby.css">
-
+    <meta property="og:image" content="ft.jpg">
     <style>
         html {
             font-family: burnaby-stencil;
@@ -32,7 +32,7 @@
             margin-top: 4px;
             margin-bottom: 4px;
         }
-        
+
         #content {
             width: 95%;
             margin-left: auto;
