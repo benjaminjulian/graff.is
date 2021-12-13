@@ -70,13 +70,13 @@ p {
 }
 
 .album {
-    flex: 1 1 auto;
+    flex: 1 1 90vh;
     display: flex;
     flex-direction: column;   
 }
 
 #map {
-    height: 90vh;
+    flex: 1 1 auto;
     border: 1px solid #AAA;
 }
 
