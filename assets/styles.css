@@ -31,12 +31,9 @@ p {
     align-items: center;
     border-bottom: 1px solid;
     margin-bottom: 10px;
-}
-
-.header-spacer {
-    font-weight: 700;
-    margin: 10px;
-    font-size: 2em;
+    column-gap: 30px;
+    flex-wrap: wrap;
+    row-gap: 5px;
 }
 
 .content {
