@@ -54,11 +54,11 @@
                 <div id="display"><p id="img-link"></p></div>
             </div>
         </div>
-        <div id="album">
+        <div class="album">
             <div id="map"></div>
         </div>
         <hr>
-        <p><a href="#" onclick="huntDown();">súmma hingað</a></p>
+        <p class="footer"><a href="#" onclick="huntDown();">súmma hingað</a></p>
     </div>
     <script>
         var $j = this.JpegMeta.JpegFile;
