@@ -69,8 +69,8 @@ p {
     margin: 3px;
 }
 
-.album {
-    flex: 1 1 90vh;
+#album {
+    flex: 1 1 80vh;
     display: flex;
     flex-direction: column;   
 }
@@ -215,3 +215,4 @@ p {
 .ui-slider a:focus {
     outline:none;
 }
+
