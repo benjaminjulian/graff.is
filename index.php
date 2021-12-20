@@ -54,7 +54,7 @@
                 <div id="display"><p id="img-link"></p></div>
             </div>
         </div>
-        <div class="album">
+        <div id="album">
             <div id="map"></div>
         </div>
         <hr>
